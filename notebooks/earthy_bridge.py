@@ -50,22 +50,12 @@ def speckle_to_vertices_and_faces(speckle_mesh, return_array=False):
     else:
         return (V, F)
 
-def vertices_and_faces_to_pyvista(V, F):
-    F_pv = np.hstack([[len(f)] + f for f in F])
-    pv_mesh = pv.PolyData(V, F_pv)
 
-    return pv_mesh
-
-def speckle_to_compas(speckle_mesh):
-    (V, F) = speckle_to_vertices_and_faces(speckle_mesh)
-    compas_mesh = CompasMesh.from_vertices_and_faces(V,F)
-
-    return compas_mesh
-
-def compas_to_speckle(compas_mesh):
-    (V, F) = compas_mesh.to_vertices_and_faces()
-    (V_arr, F_arr) = (np.array(V), np.array(F))
-    F_arr = np.pad(F_arr, ((0,0),(1,0)), mode='constant', constant_values=0)
+def vertices_and_faces_to_speckle(V, F):
+    V_arr = np.array(V)
+    F_arr = np.hstack([[len(f) - 3 ] + f for f in F])
+    # (V_arr, F_arr) = (np.array(V), np.array(F))
+    # F_arr = np.pad(F_arr, ((0,0),(1,0)), mode='constant', constant_values=0)
 
     base_plane = Plane(
         origin=Point(x=0, y=0, z=0), 
@@ -94,3 +84,29 @@ def compas_to_speckle(compas_mesh):
         data = [[speckle_mesh]]
     )
     return speckle_wrapped_mesh
+    
+def vertices_and_faces_to_pyvista(V, F):
+    F_pv = np.hstack([[len(f)] + f for f in F])
+    pv_mesh = pv.PolyData(V, F_pv)
+
+    return pv_mesh
+
+def compas_to_pyvista(compas_mesh):
+    (V, F) = compas_mesh.to_vertices_and_faces()
+    pv_mesh = vertices_and_faces_to_pyvista(V, F)
+    return pv_mesh
+
+def speckle_to_pyvista(speckle_mesh):
+    (V, F) = speckle_to_vertices_and_faces(speckle_mesh, return_array=False)
+    pv_mesh = vertices_and_faces_to_pyvista(V, F)
+    return pv_mesh
+
+def speckle_to_compas(speckle_mesh):
+    (V, F) = speckle_to_vertices_and_faces(speckle_mesh)
+    compas_mesh = CompasMesh.from_vertices_and_faces(V,F)
+    return compas_mesh
+
+def compas_to_speckle(compas_mesh):
+    (V, F) = compas_mesh.to_vertices_and_faces()
+    speckle_mesh = vertices_and_faces_to_speckle(V, F)
+    return speckle_mesh
