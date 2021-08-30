@@ -3,18 +3,18 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - compas=1.7.1
-  - ipywidgets=7.6.3
-  - jupyter=1.0.0
-  - networkx=2.6.2
-  - numpy=1.21.2
-  - pandas=1.3.2
-  - pip=21.2.4
+  - compas
+  - ipywidgets
+  - jupyter
+  - meshplot
+  - pandas
+  - pip
   - python=3.8.5
-  - pyvista=0.31.3
-  - scipy=1.7.1
+  - pyvista
   - pip:
-      - ipyvtklink==0.2.1
-      - itkwidgets==0.32.1
-      - specklepy==2.2.9
+      - ipyvtklink
+      - itkwidgets
+      - specklepy
+      - git+https://github.com/shervinazadi/topoGenesis.git
+
 prefix: /Users/shervinazadi/opt/miniconda3/envs/earthy
