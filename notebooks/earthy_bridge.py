@@ -13,11 +13,16 @@ import pyvista as pv
 
 def speckle_to_vertices_and_faces(speckle_mesh, return_array=False):
     # unwrap the mesh data
-    base_dict = speckle_mesh.dict()
-    if "@data" in base_dict.keys():
-        speckle_mesh_dict = base_dict["@data"][0][0]
+    if "data" in speckle_mesh.__dir__():
+        speckle_mesh_dict = speckle_mesh.data[0][0]
     else:
-        speckle_mesh_dict = base_dict
+        base_dict = speckle_mesh.dict()
+        if "data" in base_dict.keys():
+            speckle_mesh_dict = base_dict["data"][0][0]
+        elif "@data" in base_dict.keys():
+            speckle_mesh_dict = base_dict["@data"][0][0]
+        else:
+            speckle_mesh_dict = base_dict
 
 
     V = np.array(speckle_mesh_dict["vertices"]).reshape((-1, 3)).tolist()
